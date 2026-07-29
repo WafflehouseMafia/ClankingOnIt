@@ -37,9 +37,9 @@ namespace AIForGames
         }
 
         void ConnectTo(Node* othNode, float cost);
-        bool gSortFunction(Node* i, Node* j) { return(i->gScore < j->gScore); }
     };
 
+    bool gSortFunction(Node* i, Node* j);
     
 
 }

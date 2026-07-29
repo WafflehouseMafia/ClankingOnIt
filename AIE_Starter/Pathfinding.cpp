@@ -1,3 +1,3 @@
 #include "Pathfinding.h"
-using namespace AIForGames;
 
+bool gSortFunction(AIForGames::Node* i, AIForGames::Node* j) { return(i->gScore < j->gScore); }
