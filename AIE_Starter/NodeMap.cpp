@@ -83,61 +83,21 @@ void NodeMap::Draw()
     }
 }
 
-
-
-static std::vector<AIForGames::Node*> DijkstrasSearch(AIForGames::Node* startNode, AIForGames::Node* endNode)
+void NodeMap::DrawPath(std::vector<AIForGames::Node*> nodeMapPath, Color lineColor)
 {
-    if (!startNode) { std::cout << "startNode was invalid\n"; abort; }
-    if (!endNode) { "endNode was invalid\n"; abort; }
-    if (startNode == endNode) { return{}; }
-     
-    startNode->gScore = 0; startNode->previous = nullptr;
-
-    std::vector<AIForGames::Node*> openList;
-    std::vector<AIForGames::Node*> closedList;
-    AIForGames::Node* currentNode;
-    bool bigIfTrue;
-
-    openList.push_back(startNode);
-
-    while (openList.empty() != true);
+    for (int i = 1; i < nodeMapPath.size(); i++)
     {
-        std::sort(openList.begin(), openList.end(), AIForGames::gSortFunction);
-        currentNode = openList.front();
-
-        if (currentNode == endNode)
-        {
-            break;
-        }
-
-        openList.erase(openList.begin());
-        closedList.push_back(currentNode);
-
-        for (const AIForGames::Edge& c : currentNode->connections)
-        {
-            if (std::find(closedList.begin(), closedList.end(), c.target) != closedList.end())
-            {
-                continue;
-            }
-            if (std::find(openList.begin(), openList.end(), c.target) != openList.end())
-            {
-                continue;
-            }
-            c.target->previous = currentNode;
-            c.target->gScore = currentNode->gScore + c.cost;
-            openList.push_back(c.target);
-        }
-
-    } 
-
-    std::vector<AIForGames::Node*> path;
-    AIForGames::Node* nextStep = endNode;
-    while (nextStep != nullptr)
-    {
-        path.push_back(nextStep);
-        nextStep = nextStep->previous;
+        AIForGames::Node* other = nodeMapPath[i]->previous;
+        DrawLine(nodeMapPath[i]->position.x, nodeMapPath[i]->position.y, other->position.x, other->position.y, lineColor);
     }
-    std::reverse(path.begin(), path.end());
+}
 
-    return std::vector<AIForGames::Node*>();
+AIForGames::Node* NodeMap::GetClosestNode(glm::vec2 worldPos)
+{
+    int x = (int)(worldPos.x / m_cellSize);
+    if (x < 0 || x >= m_width) { return nullptr; }
+    int y = (int)(worldPos.y / m_cellSize);
+    if (y < 0 || y >= m_height) { return nullptr; }
+
+    return GetNode(x, y);
 }

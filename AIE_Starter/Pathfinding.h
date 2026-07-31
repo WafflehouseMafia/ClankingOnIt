@@ -22,14 +22,13 @@ namespace AIForGames
     };
 
     struct Node {
-        glm::vec2 position;
+        glm::vec2 position{};
         std::vector<Edge> connections;
-        float gScore;
+        float gScore{};
         Node* previous;
 
-
         Node() {}
-        
+ 
         Node(float x, float y)
         {
             position = { x, y };
@@ -41,6 +40,6 @@ namespace AIForGames
 
     bool gSortFunction(Node* i, Node* j);
     
-
+    std::vector<AIForGames::Node*> DijkstrasSearch(AIForGames::Node* startNode, AIForGames::Node* endNode);
 }
 

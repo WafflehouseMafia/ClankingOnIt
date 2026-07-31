@@ -28,10 +28,6 @@
 #include "NodeMap.h"
 
 
-using namespace AIForGames;
-
-
-
 int main(int argc, char* argv[])
 {
     // Initialization
@@ -45,16 +41,16 @@ int main(int argc, char* argv[])
     //--------------------------------------------------------------------------------------
 
 
-    Node* a = new Node();
+    AIForGames::Node* a = new AIForGames::Node();
     a->position = glm::vec2(125.0f, 75.0f);
-    Node* b = new Node();
+    AIForGames::Node* b = new AIForGames::Node();
     b->position = glm::vec2(250.0f, 75.0f);
 
 
     std::vector<std::string> asciiMap;
     asciiMap.push_back("0000000000000000");
     asciiMap.push_back("0111111111111110");
-    asciiMap.push_back("0110111100011110");
+    asciiMap.push_back("0110111110111110");
     asciiMap.push_back("0111111100001110");
     asciiMap.push_back("0001110100000000");
     asciiMap.push_back("0000011111110000");
@@ -74,9 +70,14 @@ int main(int argc, char* argv[])
     asciiMap.push_back("0000000000000000");
 
 
-    NodeMap yep;
-    yep.Initialise(asciiMap, 25);
+    NodeMap map;
+    map.Initialise(asciiMap, 25);
     
+    AIForGames::Node* start = map.GetNode(1, 1);
+    AIForGames::Node* end = map.GetNode(10, 18);
+    std::vector<AIForGames::Node*> nodeMapPath = DijkstrasSearch(start, end);
+    Color lineColor = { 35, 192, 90, 255 };
+
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
@@ -91,9 +92,19 @@ int main(int argc, char* argv[])
         BeginDrawing();
 
         ClearBackground(GRAY);
-        yep.Draw();
+        map.Draw();
+        map.DrawPath(nodeMapPath, lineColor);
+        
+        if (IsMouseButtonPressed(0))
+        {
+            start = end;
+            Vector2 mousePos = GetMousePosition();
+            end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+            nodeMapPath = DijkstrasSearch(start, end);
+        }
 
         EndDrawing();
+
         //----------------------------------------------------------------------------------
     }
 

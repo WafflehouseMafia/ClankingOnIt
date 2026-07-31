@@ -1,5 +1,6 @@
 #pragma once
 #include "Pathfinding.h"
+#include "raylib.h"
 #include <string>
 
 class NodeMap
@@ -10,8 +11,9 @@ class NodeMap
 public:
     void Initialise(std::vector<std::string> asciiMap, int cellSize);
     ~NodeMap();
-    AIForGames::Node* GetNode(int x, int y) { return m_nodes[x + m_width * y]; }
     void Draw();
+    void DrawPath(std::vector<AIForGames::Node*> nodeMapPath, Color lineColor);
 
-    static std::vector<AIForGames::Node*> DijkstrasSearch(AIForGames::Node* startNode, AIForGames::Node* endNode);
+    AIForGames::Node* GetNode(int x, int y) { return m_nodes[x + m_width * y]; }
+    AIForGames::Node* GetClosestNode(glm::vec2 worldPos);
 };
