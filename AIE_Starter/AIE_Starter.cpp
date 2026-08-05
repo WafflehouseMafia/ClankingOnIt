@@ -26,6 +26,7 @@
 #include "raygui.h"
 #include "Pathfinding.h"
 #include "NodeMap.h"
+#include "PathAgent.h"
 
 
 int main(int argc, char* argv[])
@@ -74,14 +75,24 @@ int main(int argc, char* argv[])
     map.Initialise(asciiMap, 25);
     
     AIForGames::Node* start = map.GetNode(1, 1);
+    PathAgent agent;
+    agent.SetNode(start);
+    agent.SetSpeed(25);
+
     AIForGames::Node* end = map.GetNode(10, 18);
-    std::vector<AIForGames::Node*> nodeMapPath = DijkstrasSearch(start, end);
+    //std::vector<AIForGames::Node*> nodeMapPath = DijkstrasSearch(start, end);
+    agent.m_path = DijkstrasSearch(start, end);
     Color lineColor = { 35, 192, 90, 255 };
 
+    float time = (float)GetTime();
+    float deltaTime;
 
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
+        float fTime = (float)GetTime();
+        deltaTime = fTime - time;
+        time = fTime;
         // Update
         //----------------------------------------------------------------------------------
         // TODO: Update your variables here
@@ -93,15 +104,19 @@ int main(int argc, char* argv[])
 
         ClearBackground(GRAY);
         map.Draw();
-        map.DrawPath(nodeMapPath, lineColor);
+        map.DrawPath(agent.m_path, lineColor);
         
         if (IsMouseButtonPressed(0))
         {
             start = end;
             Vector2 mousePos = GetMousePosition();
             end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
-            nodeMapPath = DijkstrasSearch(start, end);
+            //nodeMapPath = DijkstrasSearch(start, end);
+            agent.GoToNode(end);
         }
+
+        agent.Update(deltaTime);
+        agent.Draw();
 
         EndDrawing();
 
