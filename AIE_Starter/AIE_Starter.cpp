@@ -81,7 +81,7 @@ int main(int argc, char* argv[])
 
     AIForGames::Node* end = map.GetNode(10, 18);
     //std::vector<AIForGames::Node*> nodeMapPath = DijkstrasSearch(start, end);
-    agent.m_path = DijkstrasSearch(start, end);
+    agent.PathToNode(end);
     Color lineColor = { 35, 192, 90, 255 };
 
     float time = (float)GetTime();
@@ -112,7 +112,7 @@ int main(int argc, char* argv[])
             Vector2 mousePos = GetMousePosition();
             end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
             //nodeMapPath = DijkstrasSearch(start, end);
-            agent.GoToNode(end);
+            agent.PathToNode(end);
         }
 
         agent.Update(deltaTime);

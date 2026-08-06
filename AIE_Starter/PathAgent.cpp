@@ -5,32 +5,33 @@
 
 void PathAgent::Update(float frameTime)
 {
-	if (sizeof(m_path) == 0)
+
+	if (m_path.size() == 0)
 	{
 		return;
 	}
 	
-	AIForGames::Node* next = m_path[m_currentIndex + 1];
-	float distanceX = (next->position.x - m_position.x);
-	float distanceY = (next->position.y - m_position.y);
-	float distance = sqrt((distanceX * distanceX) + (distanceY * distanceY));
+	AIForGames::Node* next = m_path[m_currentIndex];
+	glm::vec2 moveDirection = { next->position - m_position };
+	float distance = glm::length(moveDirection);
 	distance -= (m_speed * frameTime);
 	if (distance > 0)
 	{
-		float angle = atan2(distanceY, distanceX);// *180 / 3.14159265358979323846;
-		m_position.x += ((distance * cos(angle)) * (m_speed * frameTime));
-		m_position.y += ((distance * sin(angle)) * (m_speed * frameTime));
-		
+		m_position += glm::normalize(moveDirection) * distance * m_speed * frameTime;
 	}
 	else
 	{
-		m_position.x = next->position.x;
-		m_position.y = next->position.y;
+		m_position = next->position;
+		m_currentNode = m_path[m_currentIndex];
 		m_currentIndex++;
+		if (m_currentIndex == m_path.size())
+		{
+			m_path.clear();
+		}
 	}
 }
 
-void PathAgent::GoToNode(AIForGames::Node* node)
+void PathAgent::PathToNode(AIForGames::Node* node)
 {
 	m_path = DijkstrasSearch(m_currentNode, node);
 	m_currentIndex = 0;
@@ -45,6 +46,7 @@ void PathAgent::Draw()
 void PathAgent::SetNode(AIForGames::Node* start)
 {
 	m_position = start->position;
+	m_currentNode = start;
 }
 
 void PathAgent::SetSpeed(float speed)
