@@ -33,7 +33,7 @@ void PathAgent::Update(float frameTime)
 
 void PathAgent::PathToNode(AIForGames::Node* node)
 {
-	m_path = DijkstrasSearch(m_currentNode, node);
+	m_path = AStarSearch(m_currentNode, node);
 	m_currentIndex = 0;
 }
 

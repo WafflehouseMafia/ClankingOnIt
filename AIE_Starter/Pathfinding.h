@@ -25,6 +25,8 @@ namespace AIForGames
         glm::vec2 position{};
         std::vector<Edge> connections;
         float gScore{};
+        float hScore{};
+        float fScore{};
         Node* previous;
 
         Node() {}
@@ -39,7 +41,10 @@ namespace AIForGames
     };
 
     bool gSortFunction(Node* i, Node* j);
+    bool fSortFunction(Node* i, Node* j);
     
     std::vector<AIForGames::Node*> DijkstrasSearch(AIForGames::Node* startNode, AIForGames::Node* endNode);
+
+    std::vector<AIForGames::Node*> AStarSearch(AIForGames::Node* startNode, AIForGames::Node* endNode);
 }
 

@@ -28,18 +28,23 @@ void NodeMap::Initialise(std::vector <std::string> asciiMap, int cellSize)
             AIForGames::Node* node = GetNode(x, y);
             if (node)
             {
+                
                 AIForGames::Node* nodeWest = x == 0 ? nullptr : GetNode(x - 1, y);
                 if (nodeWest)
                 {
-                    node->ConnectTo(nodeWest, 1);
-                    nodeWest->ConnectTo(node, 1);
+                    glm::vec2 betweenNodes = { nodeWest->position - node->position };
+                    float Celldistance = glm::length(betweenNodes);
+                    node->ConnectTo(nodeWest, Celldistance);
+                    nodeWest->ConnectTo(node, Celldistance);
                 }
 
                 AIForGames::Node* nodeSouth = y == 0 ? nullptr : GetNode(x, y - 1);
                 if (nodeSouth)
                 {
-                    node->ConnectTo(nodeSouth, 1);
-                    nodeSouth->ConnectTo(node, 1);
+                    glm::vec2 betweenNodes = { nodeSouth->position - node->position };
+                    float Celldistance = glm::length(betweenNodes);
+                    node->ConnectTo(nodeSouth, Celldistance);
+                    nodeSouth->ConnectTo(node, Celldistance);
                 }
             }
         }
@@ -59,7 +64,7 @@ void AIForGames::Node::ConnectTo(Node* othNode, float cost)
 
 void NodeMap::Draw()
 {
-    Color cellColor = { 84,12,47,255 };
+    Color wallColor = { 84,12,47,255 };
     Color lineColor = { 0,0,0,255 };
     
     for (int y = 0; y < m_height; y++)
@@ -69,14 +74,16 @@ void NodeMap::Draw()
             AIForGames::Node* node = GetNode(x, y);
             if (node == nullptr)
             {
-                DrawRectangle((int)(x * m_cellSize), (int)(y * m_cellSize), (int)m_cellSize - 1, (int)m_cellSize - 1, cellColor);
+                DrawRectangle((int)(x * m_cellSize), (int)(y * m_cellSize), (int)m_cellSize - 1, (int)m_cellSize - 1, wallColor);
             }
             else
             {
                 for (int i = 0; i < node->connections.size(); i++)
                 {
                     AIForGames::Node* other = node->connections[i].target;
+                    //Color cellColor = { 130, 130, 130, (255 * node->gScore) };
                     DrawLine((x + 0.5f) * m_cellSize, (y + 0.5f) * m_cellSize, (int)other->position.x, (int)other->position.y, lineColor);
+                    //DrawRectangle((int)(x * m_cellSize), (int)(y * m_cellSize), (int)m_cellSize - 1, (int)m_cellSize - 1, cellColor);
                 }
             }
         }
