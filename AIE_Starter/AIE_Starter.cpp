@@ -79,9 +79,14 @@ int main(int argc, char* argv[])
     agent.SetNode(start);
     agent.SetSpeed(25);
 
+    //PathAgent enemy;
+    //enemy.SetNode(map.GetNode(18, 15));
+    //enemy.SetSpeed(20);
+
     AIForGames::Node* end = map.GetNode(10, 18);
     //std::vector<AIForGames::Node*> nodeMapPath = DijkstrasSearch(start, end);
     agent.PathToNode(end);
+    //enemy.PathToNode(start);
     Color lineColor = { 35, 192, 90, 255 };
 
     float time = (float)GetTime();
@@ -102,9 +107,10 @@ int main(int argc, char* argv[])
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-        ClearBackground(GRAY);
+        ClearBackground(DARKGRAY);
         map.Draw();
         map.DrawPath(agent.m_path, lineColor);
+        //map.DrawPath(enemy.m_path, { 255,0,0,255 });
         
         if (IsMouseButtonPressed(0))
         {
@@ -117,6 +123,9 @@ int main(int argc, char* argv[])
 
         agent.Update(deltaTime);
         agent.Draw();
+
+        //enemy.Update(deltaTime);
+        //enemy.Draw();
 
         EndDrawing();
 

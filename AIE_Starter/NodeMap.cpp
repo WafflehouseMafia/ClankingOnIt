@@ -82,9 +82,11 @@ void AIForGames::Node::ConnectTo(Node* othNode, float cost)
 
 void NodeMap::Draw()
 {
-    Color wallColor = { 84,12,47,255 };
+    Color wallColor = { 145,120,70,200 };
     Color lineColor = { 0,0,0,255 };
-    
+    Color cellColor = { 30, 75, 20, 255 };
+    //Color hillColor = { 90, 75, 50, 255 };
+    //Color fortColor = { 50, 45, 35, 255 };
     
     for (int y = 0; y < m_height; y++)
     {
@@ -100,9 +102,9 @@ void NodeMap::Draw()
                 for (int i = 0; i < node->connections.size(); i++)
                 {
                     AIForGames::Node* other = node->connections[i].target;
-                    //Color cellColor = { 130, 130, 130, (255 * node->gScore) };
-                    DrawLine((x + 0.5f) * m_cellSize, (y + 0.5f) * m_cellSize, (int)other->position.x, (int)other->position.y, lineColor);
-                    //DrawRectangle((int)(x * m_cellSize), (int)(y * m_cellSize), (int)m_cellSize - 1, (int)m_cellSize - 1, cellColor);
+                    
+                    DrawRectangle((x * m_cellSize), (y * m_cellSize), m_cellSize-1, m_cellSize-1, cellColor);
+                    DrawLine((x + 0.5f) * m_cellSize, (y + 0.5f) * m_cellSize, other->position.x, other->position.y, lineColor);
                     
                 }
             }
