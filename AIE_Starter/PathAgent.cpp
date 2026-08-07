@@ -54,3 +54,27 @@ void PathAgent::SetSpeed(float speed)
 	m_speed = speed;
 }
 
+void Agent::Update(float deltaTime)
+{
+	if (m_current)
+	{
+		m_current->Update(this, deltaTime);
+	}
+	m_pathAgent.Update(deltaTime);
+		
+}
+
+void GoToPointBehaviour::Update(Agent* agent, float deltaTime)
+{
+	if (IsMouseButtonPressed(0))
+	{
+		Vector2 mousePos = GetMousePosition();
+		agent->GoTo(glm::vec2(mousePos.x, mousePos.y));
+	}
+}
+
+void Agent::GoTo(glm::vec2 point)
+{
+	AIForGames::Node* end = nodeMap->GetClosestNode(point);
+	pathAgent.GoToNode(end);
+}
