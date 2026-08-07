@@ -27,7 +27,8 @@
 #include "Pathfinding.h"
 #include "NodeMap.h"
 #include "PathAgent.h"
-
+#include <map>
+#include <iostream>
 
 int main(int argc, char* argv[])
 {
@@ -55,10 +56,10 @@ int main(int argc, char* argv[])
     asciiMap.push_back("0111111100001110");
     asciiMap.push_back("0001110100000000");
     asciiMap.push_back("0000011111110000");
-    asciiMap.push_back("0000001011111110");
-    asciiMap.push_back("0000001000001110");
-    asciiMap.push_back("0110001000000110");
-    asciiMap.push_back("0111111000000110");
+    asciiMap.push_back("0000005011111110");
+    asciiMap.push_back("0000005000001110");
+    asciiMap.push_back("0110005000000110");
+    asciiMap.push_back("0111115000000110");
     asciiMap.push_back("0111111111110110");
     asciiMap.push_back("0100111111111110");
     asciiMap.push_back("0100000001111110");
@@ -70,10 +71,9 @@ int main(int argc, char* argv[])
     asciiMap.push_back("0111111111111110");
     asciiMap.push_back("0000000000000000");
 
-
     NodeMap map;
     map.Initialise(asciiMap, 25);
-    
+
     AIForGames::Node* start = map.GetNode(1, 1);
     PathAgent agent;
     agent.SetNode(start);

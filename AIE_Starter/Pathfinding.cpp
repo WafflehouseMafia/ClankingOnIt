@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cmath>
 
+
 bool AIForGames::gSortFunction(AIForGames::Node* i, AIForGames::Node* j) { return(i->gScore < j->gScore); }
 bool AIForGames::fSortFunction(AIForGames::Node* i, AIForGames::Node* j) { return(i->fScore < j->fScore); }
 
@@ -27,7 +28,6 @@ std::vector<AIForGames::Node*> AIForGames::DijkstrasSearch(AIForGames::Node* sta
 
         if (currentNode == endNode)
             break;
-
 
         openList.erase(openList.begin());
         closedList.push_back(currentNode);
