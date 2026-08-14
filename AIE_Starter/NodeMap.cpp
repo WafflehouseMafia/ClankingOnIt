@@ -99,13 +99,12 @@ void NodeMap::Draw()
             }
             else
             {
-                for (int i = 0; i < node->connections.size(); i++)
+                for (int i = 1; i-1 < node->connections.size(); i++)
                 {
-                    AIForGames::Node* other = node->connections[i].target;
+                    AIForGames::Node* other = node->connections[i-1].target;
                     
                     DrawRectangle((x * m_cellSize), (y * m_cellSize), m_cellSize-1, m_cellSize-1, cellColor);
                     DrawLine((x + 0.5f) * m_cellSize, (y + 0.5f) * m_cellSize, other->position.x, other->position.y, lineColor);
-                    
                 }
             }
         }
@@ -117,7 +116,8 @@ void NodeMap::DrawPath(std::vector<AIForGames::Node*> nodeMapPath, Color lineCol
     for (int i = 1; i < nodeMapPath.size(); i++)
     {
         AIForGames::Node* other = nodeMapPath[i]->previous;
-        DrawLine(nodeMapPath[i]->position.x, nodeMapPath[i]->position.y, other->position.x, other->position.y, lineColor);
+        
+        DrawLine(nodeMapPath[i]->position.x, nodeMapPath[i]->position.y, nodeMapPath[i-1]->position.x, nodeMapPath[i-1]->position.y, lineColor);
     }
 }
 
@@ -129,4 +129,16 @@ AIForGames::Node* NodeMap::GetClosestNode(glm::vec2 worldPos)
     if (y < 0 || y >= m_height) { return nullptr; }
 
     return GetNode(x, y);
+}
+
+AIForGames::Node* NodeMap::GetRandomNode()
+{
+    AIForGames::Node* node = nullptr;
+    while (node == nullptr)
+    {
+        int x = rand() % m_width;
+        int y = rand() % m_height;
+        node = GetNode(x, y);
+    }
+    return node;
 }

@@ -16,4 +16,6 @@ public:
 
     AIForGames::Node* GetNode(int x, int y) { return m_nodes[x + m_width * y]; }
     AIForGames::Node* GetClosestNode(glm::vec2 worldPos);
+    AIForGames::Node* GetRandomNode();
+    float GetCellSize() { return m_cellSize; }
 };

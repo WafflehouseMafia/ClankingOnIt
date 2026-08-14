@@ -74,20 +74,30 @@ int main(int argc, char* argv[])
     NodeMap map;
     map.Initialise(asciiMap, 25);
 
+
+
     AIForGames::Node* start = map.GetNode(1, 1);
+    AIForGames::Node* end = map.GetNode(10, 18);
     PathAgent agent;
     agent.SetNode(start);
-    agent.SetSpeed(25);
-
-    //PathAgent enemy;
-    //enemy.SetNode(map.GetNode(18, 15));
-    //enemy.SetSpeed(20);
-
-    AIForGames::Node* end = map.GetNode(10, 18);
-    //std::vector<AIForGames::Node*> nodeMapPath = DijkstrasSearch(start, end);
     agent.PathToNode(end);
-    //enemy.PathToNode(start);
-    Color lineColor = { 35, 192, 90, 255 };
+    agent.SetSpeed(25);
+    Color agentColor = { 30, 110, 20, 255 };
+
+    AIForGames::Node* wanderStart = map.GetRandomNode();
+    Agent dudeGuy( &map, new WanderBehaviour() );
+    dudeGuy.SetNode(wanderStart);
+    dudeGuy.SetSpeed(12.5);
+    Color wanderColor = { 200, 80, 10, 255 };
+
+    AIForGames::Node* stalkStart = map.GetNode(10, 2);
+    Agent stalker(&map, new FollowBehaviour());
+    stalker.SetNode(stalkStart);
+    stalker.SetSpeed(20);
+    stalker.SetTarget(&agent);
+    Color stalkColor = { 145, 25, 90, 255 };
+    
+    Color lineColor = { 110, 10, 50, 255 };
 
     float time = (float)GetTime();
     float deltaTime;
@@ -114,18 +124,25 @@ int main(int argc, char* argv[])
         
         if (IsMouseButtonPressed(0))
         {
-            start = end;
             Vector2 mousePos = GetMousePosition();
-            end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
-            //nodeMapPath = DijkstrasSearch(start, end);
-            agent.PathToNode(end);
+            if (map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y)) != nullptr)
+            {
+                start = end;
+                end = map.GetClosestNode(glm::vec2(mousePos.x, mousePos.y));
+                //nodeMapPath = DijkstrasSearch(start, end);
+                agent.PathToNode(end);
+            }
         }
 
         agent.Update(deltaTime);
-        agent.Draw();
+        agent.Draw(agentColor);
 
-        //enemy.Update(deltaTime);
-        //enemy.Draw();
+        
+        dudeGuy.Update(deltaTime);
+        dudeGuy.Draw(wanderColor);
+
+        stalker.Update(deltaTime);
+        stalker.Draw(stalkColor);
 
         EndDrawing();
 
