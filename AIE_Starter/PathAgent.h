@@ -20,7 +20,7 @@ public:
 	void Draw(Color agentColor);
 	void SetNode(AIForGames::Node* start);
 	void SetSpeed(float speed);
-
+	glm::vec2 GetPosition() { return m_position; }
 	void Reset();
 };
 
@@ -49,8 +49,10 @@ public:
 	void SetNodeMap(NodeMap* _nodeMap) { m_nodeMap = _nodeMap; };
 	void SetSpeed(float speed);
 	void SetColor(Color color);
+	Color GetColor() { return m_color; }
 	void SetTarget(PathAgent* Target) { currentTarget = Target; }
 	PathAgent* GetTarget() { return currentTarget; }
+	glm::vec2 GetPosition() { return m_pathAgent.GetPosition(); }
 
 	void Reset();
 };
@@ -86,13 +88,13 @@ public:
 
 class SelectBehaviour : public Behaviour
 {
-	Behaviour* m_b1;
-	Behaviour* m_b2;
+	Behaviour* stalk;
+	Behaviour* wander;
 	Behaviour* m_selected;
 
 public:
-	SelectBehaviour(Behaviour* b1, Behaviour* b2) : m_b1(b1), m_b2(b2) {}
-	~SelectBehaviour() { delete m_b1, m_b2; }
+	SelectBehaviour(Behaviour* b1, Behaviour* b2) : stalk(b1), wander(b2) {}
+	~SelectBehaviour() { delete stalk, wander; }
 	virtual void Update(Agent* agent, float deltaTime);
 	void SetBehaviour(Behaviour* b, Agent* a);
 };

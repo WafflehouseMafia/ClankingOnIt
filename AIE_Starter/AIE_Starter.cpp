@@ -91,11 +91,11 @@ int main(int argc, char* argv[])
     Color wanderColor = { 200, 80, 10, 255 };
 
     AIForGames::Node* stalkStart = map.GetNode(10, 2);
-    Agent stalker(&map, new FollowBehaviour());
+    Agent stalker(&map, new SelectBehaviour(new FollowBehaviour(), new WanderBehaviour()));
     stalker.SetNode(stalkStart);
     stalker.SetSpeed(20);
     stalker.SetTarget(&agent);
-    Color stalkColor = { 145, 25, 90, 255 };
+    //Color stalkColor = { 145, 25, 90, 255 };
     
     Color lineColor = { 110, 10, 50, 255 };
 
@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
         dudeGuy.Draw(wanderColor);
 
         stalker.Update(deltaTime);
-        stalker.Draw(stalkColor);
+        stalker.Draw(stalker.GetColor());
 
         EndDrawing();
 

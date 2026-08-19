@@ -143,7 +143,17 @@ void SelectBehaviour::SetBehaviour(Behaviour* b, Agent* a)
 
 void SelectBehaviour::Update(Agent* agent, float deltaTime)
 {
-
+	if (glm::distance(agent->GetPosition(), agent->GetTarget()->GetPosition()) < agent->GetNodeMap()->GetCellSize() * 5)
+	{
+		SetBehaviour(stalk, agent);
+		agent->SetColor({ 145, 25, 90, 255 });
+	}
+	else
+	{
+		SetBehaviour(wander, agent);
+		agent->SetColor({ 200, 80, 10, 255 });
+	}
+	m_selected->Update(agent, deltaTime);
 }
 
 void PathAgent::Reset()
