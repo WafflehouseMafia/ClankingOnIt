@@ -12,4 +12,14 @@ State::~State()
 	{
 		delete b;
 	}
+
+	for (Transition t : m_transitions)
+	{
+		delete t.condition;
+	}
+}
+
+void State::Update(Agent* agent, float deltaTime)
+{
+
 }
