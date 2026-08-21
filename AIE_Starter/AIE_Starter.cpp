@@ -27,6 +27,8 @@
 #include "Pathfinding.h"
 #include "NodeMap.h"
 #include "PathAgent.h"
+#include "StateMachine.h"
+#include "Conditions.h"
 #include <map>
 #include <iostream>
 
@@ -84,6 +86,12 @@ int main(int argc, char* argv[])
     agent.SetSpeed(25);
     Color agentColor = { 30, 110, 20, 255 };
 
+    DistanceCondition* closerThan5 = new DistanceCondition(5 * map.GetCellSize(), true);
+    DistanceCondition* furtherThan7 = new DistanceCondition(7 * map.GetCellSize(), false);
+    State* wanderState = new State(new WanderBehaviour());
+    State* followState = new State(new FollowBehaviour());
+
+
     AIForGames::Node* wanderStart = map.GetRandomNode();
     Agent dudeGuy( &map, new WanderBehaviour() );
     dudeGuy.SetNode(wanderStart);
@@ -95,7 +103,6 @@ int main(int argc, char* argv[])
     stalker.SetNode(stalkStart);
     stalker.SetSpeed(20);
     stalker.SetTarget(&agent);
-    //Color stalkColor = { 145, 25, 90, 255 };
     
     Color lineColor = { 110, 10, 50, 255 };
 

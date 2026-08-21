@@ -1,36 +1,41 @@
 #pragma once
+#include "PathAgent.h"
 #include <vector>
 
+//class Behaviour;
+//class Agent;
 
-class Behaviour;
-class Agent;
+class Condition;
 
-class FiniteStateMachine
-{
-
-};
 
 class State
 {
-	std::vector<Behaviour*> m_behaviours;
-	std::vector <Transition> m_transitions;
 public:
-	State();
-	~State();
-	virtual void Update(Agent* agent, float deltaTime);
 	struct Transition
 	{
 		Condition* condition;
 		State* targetState;
 	};
+private:
+	std::vector<Behaviour*> m_behaviours;
+	std::vector <Transition> m_transitions;
+public:
+	State();
+	State(Behaviour* behaviour);
+	~State();
+	
+	virtual void Update(Agent* agent, float deltaTime);
+	
+	std::vector <Transition> GetTransitions();
 };
 
-class Transition
+class FiniteStateMachine : public Behaviour
 {
-
-};
-
-class Condition
-{
-	virtual bool IsTrue(Agent* agent) = 0;
+	std::vector<State*> m_states;
+	State* m_currentState;
+	State* m_newState;
+public:
+	FiniteStateMachine(State* s) : m_currentState(s), m_newState(nullptr) {}
+	virtual ~FiniteStateMachine();
+	void Update(Agent* agent, float deltaTime);
 };
